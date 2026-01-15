@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>HIKARI STUDIO — Gallery</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/gallery.css" />
+
+  <!-- Lightbox 최소 스타일 (이 파일에 포함해두면 바로 동작) -->
+  <style>
+    .lightbox {
+      position: fixed; inset: 0;
+      display: none; align-items: center; justify-content: center;
+      background: rgba(0,0,0,.8); z-index: 1000;
+    }
+    .lightbox.active { display: flex; }
+    .lightbox img {
+      max-width: 90vw; max-height: 90vh;
+      border-radius: 12px; background:#fff; padding:8px;
+      box-shadow: 0 8px 30px rgba(0,0,0,.5);
+      object-fit: contain; animation: lbIn .25s ease;
+    }
+    .lightbox-close {
+      position: absolute; top: 16px; right: 22px;
+      font-size: 32px; color: #fff; cursor: pointer; user-select: none;
+      line-height: 1;
+    }
+    @keyframes lbIn { from {opacity:0; transform:scale(.96);} to {opacity:1; transform:scale(1);} }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="site-header">
+    <div class="inner">
+      <h1 class="logo">HIKARI STUDIO</h1>
+      <nav class="main-nav">
+        <!-- 공백 없앤 index 링크 -->
+        <a href="../index.html">HOME</a>
+        <a href="../pages/profile.html">PROFILE</a>
+        <a href="#" class="active">GALLERY</a>
+        <a href="../pages/contact.html">CONTACT</a>
+        <a href="../pages/photography.html">PHOTOGRAPHY</a>
+        <a href="https://www.instagram.com/roji_4jin/?igshid=YmMyMTA2M2Y=" target="_blank" rel="noopener">INSTAGRAM</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- Tagline -->
+    <section class="tagline">
+      <p>사진작가 ‘로지’의 시선으로 포착한 순간들을 감상해보세요.</p>
+    </section>
+
+    <!-- Categories (썸네일은 고정) -->
+    <section class="categories">
+      <h3 class="cat-label">Category</h3>
+      <div class="cat-grid">
+        <a class="cat-card active" href="#" data-cat="portrait">
+          <div class="thumb" style="background-image:url('../images/gallay/카테고리_인물사진.JPG');"></div>
+          <span>인물사진</span>
+        </a>
+        <a class="cat-card" href="#" data-cat="couple">
+          <div class="thumb" style="background-image:url('../images/gallay/카테고리_우정스냅.jpg');"></div>
+          <span>커플/우정사진</span>
+        </a>
+        <a class="cat-card" href="#" data-cat="landscape">
+          <div class="thumb" style="background-image:url('../images/gallay/카테고리_풍경사진.jpg');"></div>
+          <span>풍경사진</span>
+        </a>
+        <a class="cat-card" href="#" data-cat="vehicle">
+          <!-- 콜론(:)이 있는 파일명은 웹서버에서 문제될 수 있어요. 필요하면 파일명을 바꾸세요. -->
+          <div class="thumb" style="background-image:url('../images/gallay/카테고리_비행기:자동차.jpg');"></div>
+          <span>자동차/항공기 사진</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- Masonry Gallery (JS가 주입) -->
+    <section id="gallery" class="masonry"></section>
+  </main>
+
+  <!-- Lightbox (본문 끝, 스크립트 위) -->
+  <div class="lightbox" id="lightbox">
+    <span class="lightbox-close" id="lightbox-close">&times;</span>
+    <img src="" alt="Expanded view">
+  </div>
+
+  <!-- JS: 썸네일은 그대로, 갤러리만 교체 + Lightbox -->
+  <script>
+  // pages/gallery.html 기준 공통 폴더
+  const BASE = "../images/gallay/";
+
+  // 파일명만 카테고리별로 나열하세요 (모두 같은 폴더에 있는 경우)
+  const FILES = {
+    portrait: [
+      "인물사진/인물사진_01.jpg",
+      "인물사진/인물사진_02.jpg",
+      "인물사진/인물사진_03.jpg",
+      "인물사진/인물사진_04.jpg",
+      "인물사진/인물사진_05.jpg",
+      "인물사진/인물사진_06.jpg",
+      "인물사진/인물사진_07.jpg",
+      "인물사진/인물사진_08.jpg",
+      "인물사진/인물사진_09.jpg",
+      "인물사진/인물사진_10.jpg",
+      "인물사진/인물사진_11.jpg",
+      "인물사진/인물사진_12.jpg",
+      "인물사진/인물사진_13.jpg",
+      "인물사진/인물사진_14.jpg",
+      "인물사진/인물사진_15.jpg",
+      "인물사진/인물사진_16.jpg",
+      "인물사진/인물사진_17.jpg",
+      "인물사진/인물사진_18.jpg",
+      "인물사진/인물사진_19.jpg",
+      "인물사진/인물사진_20.jpg",
+    ],
+    couple: [
+      "커플우정/커플우정_01.jpg",
+      "커플우정/커플우정_02.jpg",
+      "커플우정/커플우정_03.jpg",
+      "커플우정/커플우정_04.jpg",
+      "커플우정/커플우정_05.jpg",
+      "커플우정/커플우정_06.jpg",
+      "커플우정/커플우정_07.jpg",
+      "커플우정/커플우정_08.jpg",
+      "커플우정/커플우정_09.jpg",
+      "커플우정/커플우정_10.jpg",
+      "커플우정/커플우정_11.jpg",
+      "커플우정/커플우정_12.jpg",
+      "커플우정/커플우정_13.jpg",
+      "커플우정/커플우정_14.jpg",
+      "커플우정/커플우정_15.jpg",
+      "커플우정/커플우정_16.jpg",
+      "커플우정/커플우정_17.jpg",
+
+    ],
+
+    landscape: [
+      "풍경사진/풍경_01.jpg",
+      "풍경사진/풍경_02.jpg",
+      "풍경사진/풍경_03.jpg",
+      "풍경사진/풍경_04.jpg",
+      "풍경사진/풍경_05.jpg",
+      "풍경사진/풍경_06.jpg",
+      "풍경사진/풍경_07.jpg",
+      "풍경사진/풍경_08.jpg",
+      "풍경사진/풍경_09.jpg",
+      "풍경사진/풍경_10.jpg",
+      "풍경사진/풍경_11.jpg",
+      "풍경사진/풍경_12.jpg",
+      "풍경사진/풍경_13.jpg",
+      "풍경사진/풍경_14.jpg",
+      "풍경사진/풍경_15.jpg",
+      "풍경사진/풍경_16.jpg",
+    ],
+
+    vehicle: [
+      "교통수단/교통_01.jpg",
+      "교통수단/교통_02.jpg",
+      "교통수단/교통_03.jpg",
+      "교통수단/교통_04.jpg",
+      "교통수단/교통_05.jpg",
+      "교통수단/교통_06.jpg",
+      "교통수단/교통_07.jpg",
+      "교통수단/교통_08.jpg",
+      "교통수단/교통_09.jpg",
+      "교통수단/교통_10.jpg",
+      "교통수단/교통_11.jpg",
+      "교통수단/교통_12.jpg",
+      "교통수단/교통_13.jpg",
+      "교통수단/교통_14.jpg",
+      "교통수단/교통_15.jpg",
+      "교통수단/교통_16.jpg",
+      "교통수단/교통_17.jpg",
+    ],
+  };
+
+  // 파일명 배열 → {src, alt} 변환
+  const toItems = (names, prefix) =>
+    names.map((name, i) => ({
+      src: encodeURI(BASE + name), // 한글/공백 안전
+      alt: `${prefix} ${String(i + 1).padStart(2, "0")}`,
+    }));
+
+  // 최종 렌더 데이터
+  const IMAGES = {
+    portrait: toItems(FILES.portrait, "Portrait"),
+    couple: toItems(FILES.couple, "Couple"),
+    landscape: toItems(FILES.landscape, "Landscape"),
+    vehicle: toItems(FILES.vehicle, "Vehicle"),
+  };
+
+  // Lightbox 요소
+  const lightbox = document.getElementById("lightbox");
+  const lightboxImg = lightbox.querySelector("img");
+  const closeBtn = document.getElementById("lightbox-close");
+
+  // 갤러리 렌더 (썸네일은 건드리지 않음!)
+  function renderGallery(cat){
+    const data = IMAGES[cat] || [];
+    const wrap = document.getElementById('gallery');
+
+    wrap.innerHTML = data.map(({src, alt}) => `
+      <figure class="m-item">
+        <img loading="lazy" src="${src}" alt="${alt}">
+      </figure>
+    `).join("");
+
+    // active 토글만 (썸네일 배경은 교체하지 않음)
+    document.querySelectorAll('.cat-card').forEach(card=>{
+      card.classList.toggle('active', card.dataset.cat === cat);
+    });
+  }
+
+  // 카테고리 클릭 → 렌더
+  document.querySelectorAll('.cat-card').forEach(card=>{
+    card.addEventListener('click', (e)=>{
+      e.preventDefault();
+      const cat = card.dataset.cat;
+      // 뒤로가기 지원
+      if (location.hash !== `#${cat}`) location.hash = cat;
+      else renderGallery(cat);
+    });
+  });
+
+  // 해시 변화 대응
+  window.addEventListener('hashchange', ()=>{
+    const cat = (location.hash || '#portrait').slice(1);
+    renderGallery(cat);
+  });
+
+  // 초기 로드
+  document.addEventListener('DOMContentLoaded', ()=>{
+    const initial = (location.hash || '#portrait').slice(1);
+    renderGallery(initial);
+  });
+
+  /* ========= Lightbox 동작 (이벤트 위임으로 동적 갤러리 대응) ========= */
+  document.getElementById('gallery').addEventListener('click', (e)=>{
+    const img = e.target.closest('img');
+    if(!img) return;
+    lightbox.classList.add('active');
+    lightboxImg.src = img.src;
+    lightboxImg.alt = img.alt || '';
+  });
+
+  // 닫기 버튼 / 배경 / ESC
+  document.getElementById('lightbox-close').addEventListener('click', ()=> {
+    lightbox.classList.remove('active');
+  });
+  lightbox.addEventListener('click', (e)=>{
+    if(e.target === lightbox) lightbox.classList.remove('active');
+  });
+  window.addEventListener('keydown', (e)=>{
+    if(e.key === 'Escape') lightbox.classList.remove('active');
+  });
+  </script>
+</body>
+</html>

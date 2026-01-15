@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>HIKARI STUDIO — Contact</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg:#ffffff;
+      --fg:#111111;
+      --muted:#6b7280;
+      --line:#e5e7eb;
+      --accent:#111827;
+      --radius:16px;
+      --maxw:1100px;
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      background:var(--bg);
+      color:var(--fg);
+      font-family:Inter,"Noto Sans KR",system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+      line-height:1.6;
+    }
+
+    a{color:inherit;text-decoration:none}
+    .inner{max-width:var(--maxw);margin:0 auto;padding:0 20px}
+
+    /* ================= Header ================= */
+    .site-header{
+      border-bottom:1px solid var(--line);
+      background:#fff;
+    }
+    .site-header .inner{
+      padding:22px 20px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:24px;
+    }
+    .logo{
+      font-size:28px;
+      font-weight:800;
+      letter-spacing:.3px;
+      margin:0;
+    }
+    .main-nav{
+      display:flex;
+      gap:20px;
+      flex-wrap:wrap;
+    }
+    .main-nav a{
+      font-size:14px;
+      letter-spacing:.06em;
+      text-transform:uppercase;
+      color:var(--muted);
+      position:relative;
+      padding-bottom:6px;
+    }
+    .main-nav a:hover{color:#111}
+    .main-nav a.active{
+      color:#111;
+      font-weight:700;
+    }
+    .main-nav a.active::after{
+      content:"";
+      position:absolute;
+      left:0;right:0;bottom:-6px;
+      height:2px;
+      background:#111;
+    }
+
+    /* ================= Contact ================= */
+    main.contact{
+      padding:56px 0 100px;
+    }
+
+    .eyebrow{
+      font-size:12px;
+      font-weight:800;
+      letter-spacing:.2em;
+      color:var(--muted);
+    }
+    .contact h1{
+      margin:10px 0 12px;
+      font-size:36px;
+      font-weight:800;
+    }
+    .sub{
+      color:var(--muted);
+      font-size:16px;
+      max-width:60ch;
+    }
+
+    /* ===== 카드 그리드 ===== */
+    .grid{
+      display:grid;
+      gap:18px;
+      margin-top:36px;
+    }
+    @media(min-width:768px){
+      .grid{grid-template-columns:1fr 1fr}
+    }
+
+    .card{
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      padding:22px;
+      background:#fff;
+      display:flex;
+      gap:16px;
+      transition:.25s ease;
+    }
+    .card:hover{
+      transform:translateY(-2px);
+      box-shadow:0 12px 30px rgba(0,0,0,.08);
+    }
+
+    .icon{
+      width:44px;height:44px;
+      border-radius:12px;
+      background:#f1f5f9;
+      display:grid;
+      place-items:center;
+      flex-shrink:0;
+    }
+
+    .meta .label{
+      font-size:12px;
+      font-weight:700;
+      letter-spacing:.04em;
+      color:var(--muted);
+    }
+    .meta .value{
+      margin-top:6px;
+      font-size:20px;
+      font-weight:800;
+    }
+    .meta .hint{
+      font-size:13px;
+      color:var(--muted);
+      margin-top:4px;
+    }
+
+    .actions{
+      display:flex;
+      gap:10px;
+      margin-top:14px;
+      flex-wrap:wrap;
+    }
+    .btn{
+      border:1px solid var(--line);
+      background:#fff;
+      padding:10px 14px;
+      border-radius:12px;
+      font-size:14px;
+      font-weight:600;
+      cursor:pointer;
+    }
+    .btn:hover{background:#f3f4f6}
+    .btn.primary{
+      background:var(--accent);
+      color:#fff;
+      border-color:var(--accent);
+    }
+
+    /* ================= 안내 섹션 ================= */
+    .note-wrap{
+      margin-top:60px;
+    }
+    .note-grid{
+      display:grid;
+      gap:20px;
+    }
+    @media(min-width:900px){
+      .note-grid{grid-template-columns:1fr 1fr}
+      .note-wide{grid-column:1/-1}
+    }
+
+    .note-card{
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      padding:24px;
+      background:#fff;
+    }
+    .note-card h3{
+      margin:0 0 12px;
+      font-size:18px;
+      font-weight:800;
+    }
+    .note-card ul{
+      margin:0;
+      padding-left:18px;
+      font-size:14px;
+      line-height:1.8;
+    }
+    .note-card li{margin:6px 0}
+    .note-small{
+      margin-top:12px;
+      font-size:13px;
+      color:var(--muted);
+    }
+
+    .note-cols{
+      display:grid;
+      gap:16px;
+    }
+    @media(min-width:900px){
+      .note-cols{grid-template-columns:repeat(3,1fr)}
+    }
+
+    /* ================= Toast ================= */
+    .toast{
+      position:fixed;
+      left:50%;
+      bottom:24px;
+      transform:translateX(-50%);
+      background:#111827;
+      color:#fff;
+      padding:10px 16px;
+      border-radius:12px;
+      font-size:14px;
+      opacity:0;
+      pointer-events:none;
+      transition:.3s ease;
+    }
+    .toast.show{opacity:1}
+  </style>
+</head>
+
+<body>
+
+<header class="site-header">
+  <div class="inner">
+    <h1 class="logo">HIKARI STUDIO</h1>
+    <nav class="main-nav">
+      <a href="../index.html">HOME</a>
+      <a href="../pages/profile.html">PROFILE</a>
+      <a href="../pages/ gallery.html">GALLERY</a>
+      <a href="#" class="active">CONTACT</a>
+      <a href="../pages/photography.html">PHOTOGRAPHY</a>
+      <a href="https://www.instagram.com/roji_4jin" target="_blank">INSTAGRAM</a>
+    </nav>
+  </div>
+</header>
+
+<main class="contact">
+  <div class="inner">
+    <span class="eyebrow">CONTACT</span>
+    <h1>촬영 문의</h1>
+    <p class="sub">아래 방법 중 편한 채널로 연락 주세요.  
+    일정/장소/촬영 목적을 함께 보내주시면 가장 빠르게 안내드립니다.</p>
+
+    <!-- 기본 연락 카드 -->
+    <section class="grid">
+      <article class="card">
+        <div class="icon">📞</div>
+        <div class="meta">
+          <div class="label">PHONE</div>
+          <div class="value"><a href="tel:+818085034516">080-8503-4516</a></div>
+          <div class="hint">긴급 문의 시 가장 빠릅니다</div>
+          <div class="actions">
+            <a class="btn primary" href="tel:+818085034516">전화하기</a>
+            <button class="btn copy-btn" data-copy="080-8503-4516">복사</button>
+          </div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="icon">✉️</div>
+        <div class="meta">
+          <div class="label">EMAIL</div>
+          <div class="value">
+            <a href="mailto:ksw6507@gmail.com">ksw6507@gmail.com</a>
+          </div>
+          <div class="hint">촬영 내용 정리해서 보내주세요</div>
+          <div class="actions">
+            <a class="btn primary" href="mailto:ksw6507@gmail.com">메일 작성</a>
+            <button class="btn copy-btn" data-copy="ksw6507@gmail.com">복사</button>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <!-- 안내 / 주의사항 -->
+    <section class="note-wrap">
+      <div class="note-grid">
+
+        <div class="note-card">
+          <h3>문의 전 준비 사항</h3>
+          <ul>
+            <li>희망 촬영 날짜 / 시간</li>
+            <li>촬영 장소 (역 기준)</li>
+            <li>촬영 목적 (프로필, 커플, 스냅 등)</li>
+            <li>인원 수 / 원하는 분위기</li>
+          </ul>
+          <p class="note-small">정보가 구체적일수록 빠른 안내가 가능합니다.</p>
+        </div>
+
+        <div class="note-card">
+          <h3>촬영 가능 지역</h3>
+          <ul>
+            <li>도쿄 23구 중심</li>
+            <li>요코하마 / 가마쿠라 협의 가능</li>
+            <li>지역에 따라 교통비 추가</li>
+          </ul>
+        </div>
+
+        <div class="note-card note-wide">
+          <h3>주의사항 & 정책</h3>
+          <div class="note-cols">
+            <div>
+              <strong>우천</strong>
+              <ul>
+                <li>24시간 전까지 일정 변경 가능</li>
+                <li>당일 취소 시 비용 발생</li>
+              </ul>
+            </div>
+            <div>
+              <strong>보정</strong>
+              <ul>
+                <li>색감 / 명암 위주 자연 보정</li>
+                <li>과한 보정은 진행하지 않음</li>
+              </ul>
+            </div>
+            <div>
+              <strong>저작권</strong>
+              <ul>
+                <li>포트폴리오 사용 시 사전 동의</li>
+                <li>비공개 요청 가능</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+  </div>
+</main>
+
+<div class="toast">복사 완료!</div>
+
+<script>
+  const toast=document.querySelector('.toast');
+  document.querySelectorAll('.copy-btn').forEach(btn=>{
+    btn.onclick=async()=>{
+      await navigator.clipboard.writeText(btn.dataset.copy);
+      toast.classList.add('show');
+      setTimeout(()=>toast.classList.remove('show'),1200);
+    }
+  });
+</script>
+
+</body>
+</html>
